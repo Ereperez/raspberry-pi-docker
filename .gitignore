@@ -434,7 +434,7 @@ FodyWeavers.xsd
 
 # Environment files (contain passwords/secrets)
 .env
-.env.*
+#.env.*
 
 # Docker overrides
 docker-compose.override.yml
