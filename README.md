@@ -154,3 +154,7 @@ chmod +x scripts/backup-docker.sh
 ### scripts/update-dns.sh
 *Make executable:*
 chmod +x scripts/update-dns.sh
+
+## Fresh RaspberryPi install
+### Run the bootstrap.sh file
+chmod +x scripts/bootstrap.sh
