@@ -427,3 +427,52 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# =========================
+# Docker / Homelab
+# =========================
+
+# Environment files (contain passwords/secrets)
+.env
+.env.*
+
+# Docker overrides
+docker-compose.override.yml
+
+# Logs
+*.log
+logs/
+
+# Backups
+backup/
+backups/
+*.tar.gz
+*.zip
+
+# Pi-hole generated data
+dns/pihole/*.db
+dns/pihole/*.db-shm
+dns/pihole/*.db-wal
+dns/pihole/*.log
+
+# Pi-hole generated configuration/state
+dns/pihole/pihole-FTL.conf
+dns/pihole/pihole.toml
+
+# Unbound runtime data
+dns/unbound/*.log
+
+# Tailscale state
+tailscale/state/
+
+# Home Assistant secrets/state (future)
+homeassistant/.storage/
+homeassistant/secrets.yaml
+
+# Docker volumes
+**/data/
+**/cache/
+
+# OS files
+.DS_Store
+Thumbs.db
