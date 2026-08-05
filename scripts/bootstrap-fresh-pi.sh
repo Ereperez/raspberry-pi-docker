@@ -61,7 +61,7 @@ sudo docker compose version
 
 echo
 echo "====================================="
-echo " Bootstrap complete!"
+echo " bootstrap-fresh-pi complete!"
 echo "====================================="
 echo
 echo "Next steps:"

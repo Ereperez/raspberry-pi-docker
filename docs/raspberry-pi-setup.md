@@ -1,6 +1,7 @@
 # Raspberry Pi Initial Setup
 
 This guide prepares a fresh Raspberry Pi OS Lite (64-bit) installation for the homelab.
+Only run bootstrap-fresh-pi.sh on a freshly installed Raspberry Pi OS.
 
 ---
 
@@ -24,12 +25,12 @@ cd RASPBERRY-PI-DOCKER
 
 ---
 
-# 3. Run bootstrap
+# 3. Run bootstrap-fresh-pi
 
 ```bash
-chmod +x scripts/bootstrap.sh
+chmod +x scripts/bootstrap-fresh-pi.sh
 
-./scripts/bootstrap.sh
+./scripts/bootstrap-fresh-pi.sh
 ```
 
 The script installs:
