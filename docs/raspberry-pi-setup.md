@@ -18,7 +18,7 @@ sudo reboot
 # 2. Clone this repository
 
 ```bash
-git clone https://github.com/<yourusername>/RASPBERRY-PI-DOCKER.git
+git clone https://github.com/Ereperez/raspberry-pi-docker.git
 
 cd RASPBERRY-PI-DOCKER
 ```
@@ -120,6 +120,12 @@ View logs.
 
 ```bash
 docker compose logs -f
+```
+
+Check that any Portainer/Dockge container is also running.
+
+```bash
+docker ps
 ```
 
 ---
