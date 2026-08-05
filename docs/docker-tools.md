@@ -44,6 +44,7 @@ newgrp docker
 
 ### Prevent port 53 conflict (might not be running)
 sudo systemctl stop systemd-resolved
+
 sudo systemctl disable systemd-resolved
 
 # Install Portainer
