@@ -156,5 +156,6 @@ chmod +x scripts/backup-docker.sh
 chmod +x scripts/update-dns.sh
 
 ## Fresh RaspberryPi install
-### Run the bootstrap.sh file
-chmod +x scripts/bootstrap.sh
+### Run the bootstrap-fresh-pi.sh file
+chmod +x scripts/bootstrap-fresh-pi.sh
+#### Only run bootstrap-fresh-pi.sh on a freshly installed Raspberry Pi OS.
