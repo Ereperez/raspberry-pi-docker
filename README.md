@@ -40,18 +40,16 @@ Internet DNS root servers
 ---
 
 # Initial setup
-
 ## Install Docker
 
-### bash
+*bash*
 "curl -fsSL https://get.docker.com | sh"
 
 ### Add user to docker group:
 sudo usermod -aG docker $USER
 
 ### Log out and back in.
-
-### Verify:
+*Verify:*
 docker --version
 docker compose version
 
@@ -61,17 +59,17 @@ cd ~/RASPBERRY-PI-DOCKER/dns
 ### Create environment file:
 nano .env
 
-### Example:
+*Example:*
 TZ=Europe/Stockholm
 PIHOLE_PASSWORD=change_this_password
 
 ### Start services:
 docker compose up -d
 
-### Check status:
+#### Check status:
 docker compose ps
 
-### View logs:
+#### View logs:
 docker compose logs -f
 
 ## Pi-hole configuration
@@ -79,60 +77,67 @@ docker compose logs -f
 ### Log in to Pihole as admin:
 http://raspberrypi/admin or in PS: ssh USERNAME@IPADDRESS and then enter password
 
-### Configure:
-### DNS upstream
-### Use:
+*Configure:*
+DNS upstream
+*Use:*
 unbound
-### Disable other upstream DNS providers.
+#### Disable other upstream DNS providers.
 
 ### Blocklists
-### Add:
+*Add:*
 ### LG TV:
 https://badblock.celenity.dev/abp/lg.txt
 https://gist.githubusercontent.com/mcrumm/972070dfe67d44ed61c4247563cbf07c/raw
-### Alternatively:
+### Alt:
 General smart TV block:
 https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/SmartTV.txt
+
 Samsung block:
 https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/native.samsung.txt
+
 ### Update gravity:
 Tools -> Update Gravity
 
----
 
 ## Updating DNS stack
 
-### Check image updates:
+#### Check image updates:
 docker compose pull
 
-### Review changes.
+#### Review changes.
 docker compose up -d
 
-### Remove unused images:
+#### Remove unused images:
 docker image prune
 
 ## Backup
 
-### Run:
+*Run:*
 ./backup-docker.sh
-### Backups are stored locally.
+#### Backups are stored locally.
+
+### Security note
+.env is excluded.
+That means your passwords are not backed up.
+You could back up .env separately encrypted and store the encrypted file somewhere safe:
+gpg -c dns/.env
 
 ## Restore
 
 ### Extract backup archive.
-### Restore folders:
+*Restore folders:*
 dns/pihole
 dns/unbound
-### Start:
+#### Start:
 docker compose up -d
 
 ## Maintenance
 
-### Check containers:
+#### Check containers:
 docker ps
-### Check resource usage:
+#### Check resource usage:
 docker stats
-### Restart DNS:
+#### Restart DNS:
 docker compose restart
 
 --- 
@@ -141,17 +146,11 @@ docker compose restart
 ### Commit configuration changes:
 git add .
 git commit -m "Update DNS configuration"
-#### Do not commit: ,.env files, passwords, databases, backups
+#### Do not commit: .env files, passwords, databases, backups
 ### scripts/backup-docker.sh 
-### Make executable:
+*Make executable:*
 chmod +x scripts/backup-docker.sh
 
 ### scripts/update-dns.sh
-### Make executable:
+*Make executable:*
 chmod +x scripts/update-dns.sh
-
-### Security note
-.env is excluded.
-That means your passwords are not backed up.
-You could back up .env separately encrypted and store the encrypted file somewhere safe:
-gpg -c dns/.env
