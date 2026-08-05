@@ -111,3 +111,12 @@ docker compose up -d
 ```
 
 > **Once started**, open your browser and navigate to `http://<YOUR-PI-IP>:5001` to set up your admin account.
+
+## Check that things are up and running
+```bash
+docker compose ps
+```
+
+```bash
+docker ps
+```
