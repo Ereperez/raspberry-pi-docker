@@ -171,14 +171,42 @@ Verify:
 
 Recommended:
 
-LG TV
+Currently in use:
+
+```
+https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
+```
+
+```
+https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/popupads.txt
+```
+
+```
+https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/native.lgwebos.txt
+```
+
+```
+https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/native.xiaomi.txt
+```
+
+```
+https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/pro.txt
+```
+
+```
+https://big.oisd.nl
+```
+
+```
+https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/SmartTV.txt
+```
+
+```
+https://gist.github.com/mcrumm/972070dfe67d44ed61c4247563cbf07c
+```
 
 ```
 https://badblock.celenity.dev/abp/lg.txt
-```
-
-```
-https://gist.githubusercontent.com/mcrumm/972070dfe67d44ed61c4247563cbf07c/raw
 ```
 
 General
