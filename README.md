@@ -1,18 +1,34 @@
 # Raspberry Pi Docker Homelab
 
-Docker services running on Raspberry Pi.
+Docker services running on Raspberry Pi. Written with help of Gemini, ChatGPT and Claude.
 
 ## Current services
 
-| Service | Purpose |
-|---|---|
-| Pi-hole | Network-wide DNS filtering |
-| Unbound | Recursive DNS resolver |
-| Beszel | System monitoring |
-| Gatus | Service monitoring |
-| Homepage | Dashboard |
-| WUD | Docker update notifications |
-| Tailscale | Remote access |
+| Service | Purpose | Status |
+|---|---|---|
+| Pi-hole | Network-wide DNS filtering | Live |
+| Unbound | Recursive DNS resolver | Live |
+| Portainer | Visual Docker monitor | Live |
+| Dockge | Compose management | ON-HOLD |
+| Backrest | Encrypted backups (restic) | Planned — see [docs/backup-restic-backrest.md](docs/backup-restic-backrest.md) |
+| Homepage | Dashboard | Planned — see [docs/homepage-dashboard.md](docs/homepage-dashboard.md) |
+| Beszel | System monitoring | Planned |
+| Gatus | Service monitoring | Planned |
+| WUD | Docker update notifications | Planned |
+| Tailscale | Remote access | Planned |
+
+> Update this table's Status column as each service goes live — see
+> `docs/CHANGELOG.md` and `docs/VERSION.md` for the running history.
+
+## Documentation
+
+- [docs/manual-installation.md](docs/manual-installation.md) — manual Pi setup
+- [docs/raspberry-pi-setup.md](docs/raspberry-pi-setup.md) — fresh Pi bootstrap
+- [docs/docker-tools.md](docs/docker-tools.md) — Portainer + Dockge
+- [docs/backup-restic-backrest.md](docs/backup-restic-backrest.md) — Restic + Backrest backup setup
+- [docs/homepage-dashboard.md](docs/homepage-dashboard.md) — Homepage dashboard + socket-proxy setup
+- [docs/CHANGELOG.md](docs/CHANGELOG.md) — dated history of changes
+- [docs/VERSION.md](docs/VERSION.md) — pinned versions per service
 
 ---
 
@@ -166,6 +182,13 @@ docker image prune
 ---
 
 # Backup
+
+> **Note:** the section below describes the original local backup script.
+> A more complete, off-site, encrypted backup solution (Restic + Backrest)
+> is documented separately in
+> [docs/backup-restic-backrest.md](docs/backup-restic-backrest.md) and will
+> supersede this once deployed. Keeping this section until that migration
+> is complete.
 
 ### Run backup script
 

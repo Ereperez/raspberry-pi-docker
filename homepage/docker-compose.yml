@@ -1,0 +1,82 @@
+services:
+  dockerproxy:
+    image: wollomatic/socket-proxy:1
+    container_name: homepage-dockerproxy
+    hostname: dockerproxy
+    restart: unless-stopped
+
+    read_only: true
+    mem_limit: 64M
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges
+    # 65534 = nobody. Second value must match the GID of the "docker" group
+    # on the Pi -- check with: getent group docker
+    user: '65534:${DOCKER_GID}'
+
+    command:
+      - '-loglevel=info'
+      - '-listenip=0.0.0.0'
+      - '-listenport=2375'
+      # Only the homepage container may connect
+      - '-allowfrom=homepage'
+      # Read-only access to container listing/inspection/stats only --
+      # no exec, no create, no start/stop, no volumes, no networks.
+      - '-allowGET=/v1\..{1,2}/(containers.*|version|info)'
+      - '-allowHEAD=/_ping'
+      # Check the real socket every hour; stop (and let compose restart) on failure
+      - '-watchdoginterval=3600'
+      - '-stoponwatchdog'
+      - '-shutdowngracetime=10'
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+    networks:
+      - docker-proxynet
+
+    logging:
+      driver: json-file
+      options:
+        max-size: '10m'
+        max-file: '3'
+
+  homepage:
+    image: ghcr.io/gethomepage/homepage:v1.13.2
+    container_name: homepage
+    hostname: homepage
+    restart: unless-stopped
+
+    depends_on:
+      - dockerproxy
+
+    ports:
+      - '3000:3000'
+
+    environment:
+      TZ: ${TZ}
+      HOMEPAGE_ALLOWED_HOSTS: ${HOMEPAGE_ALLOWED_HOSTS}
+      PUID: ${PUID}
+      PGID: ${PGID}
+
+    volumes:
+      - ./config:/app/config
+      - ./images:/app/public/images
+
+    networks:
+      - default
+      - docker-proxynet
+
+    logging:
+      driver: json-file
+      options:
+        max-size: '10m'
+        max-file: '3'
+
+networks:
+  # Isolated network -- only homepage and dockerproxy sit here, and
+  # dockerproxy only accepts connections from a container named "homepage".
+  docker-proxynet:
+    name: homepage-dockerproxynet
+    internal: true
