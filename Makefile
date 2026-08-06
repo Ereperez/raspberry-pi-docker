@@ -1,5 +1,5 @@
-bootstrap:
-	./scripts/bootstrap.sh
+bootstrap fresh pi:
+	./scripts/bootstrap-fresh-pi.sh
 
 dns-up:
 	cd dns && docker compose up -d
