@@ -1,0 +1,12 @@
+---
+title: Homelab
+theme: dark
+color: slate
+
+layout:
+  DNS:
+    style: row
+    columns: 2
+  Homelab Tools:
+    style: row
+    columns: 3

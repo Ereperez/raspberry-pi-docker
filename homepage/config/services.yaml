@@ -1,0 +1,34 @@
+---
+- DNS:
+    - Pi-hole:
+        icon: pi-hole.png
+        href: http://192.168.1.79/admin
+        description: DNS filtering
+        widget:
+          type: pihole
+          url: http://pihole
+          key: ${PIHOLE_API_KEY}
+
+    - Backrest:
+        icon: restic.png
+        href: http://192.168.1.79:9898
+        description: Backup status
+
+- Homelab Tools:
+    - Dozzle:
+        icon: dozzle.png
+        href: http://192.168.1.79:8080
+        description: Container logs
+        # Add once deployed
+
+    - Beszel:
+        icon: beszel.png
+        href: http://192.168.1.79:8090
+        description: System monitoring
+        # Add once deployed
+
+    - Gatus:
+        icon: gatus.png
+        href: http://192.168.1.79:8081
+        description: Uptime checks
+        # Add once deployed
