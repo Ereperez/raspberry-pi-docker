@@ -1,6 +1,6 @@
 # Raspberry Pi Docker Homelab
 
-Docker services running on Raspberry Pi. Written with help of Gemini, ChatGPT and Claude.
+Docker services running on Raspberry Pi 4 - 4GB. Written with help of Gemini, ChatGPT and Claude.
 
 ## Current services
 
@@ -9,8 +9,8 @@ Docker services running on Raspberry Pi. Written with help of Gemini, ChatGPT an
 | Pi-hole | Network-wide DNS filtering | Live |
 | Unbound | Recursive DNS resolver | Live |
 | Portainer | Visual Docker monitor | Live |
-| Dockge | Compose management | ON-HOLD |
-| Backrest | Encrypted backups (restic) | Planned — see [docs/backup-restic-backrest.md](docs/backup-restic-backrest.md) |
+| Dockge | Compose management | Not planned |
+| Backrest | Encrypted backups (restic) | Live |
 | Homepage | Dashboard | Planned — see [docs/homepage-dashboard.md](docs/homepage-dashboard.md) |
 | Beszel | System monitoring | Planned |
 | Gatus | Service monitoring | Planned |
@@ -183,12 +183,11 @@ docker image prune
 
 # Backup
 
-> **Note:** the section below describes the original local backup script.
-> A more complete, off-site, encrypted backup solution (Restic + Backrest)
-> is documented separately in
-> [docs/backup-restic-backrest.md](docs/backup-restic-backrest.md) and will
-> supersede this once deployed. Keeping this section until that migration
-> is complete.
+> **Note:** the section below describes the original local backup script,
+> now superseded by Restic + Backrest (encrypted, off-site, verified
+> restore). See [docs/backup-restic-backrest.md](docs/backup-restic-backrest.md)
+> for the current setup. Kept here for reference until the old script and
+> local backup folders are formally retired.
 
 ### Run backup script
 

@@ -8,12 +8,24 @@ Unbound: v1.25.2
 ## Management
 
 Portainer: 2.39.5
-Dockge: <version>
+Dockge: not planned
 
 ## Backup
 
-Backrest: v1.12.1 *(not yet deployed)*
+Backrest: v1.12.1
 Restic: managed by Backrest, no separate pin
+rclone: latest (installed via official install script, not version-pinned)
+
+**Backup destination:** Google Drive, via rclone (`drive.file` scope —
+isolated to files rclone creates itself). Own Google Cloud OAuth client in
+use (shared rclone client_id being retired during 2026).
+
+**Schedule:** daily. **Retention:** 14 daily / 8 weekly / 12 monthly.
+**Monitoring:** Healthchecks.io dead-man's-switch hook
+(`CONDITION_SNAPSHOT_SUCCESS` + `CONDITION_ANY_ERROR`).
+
+**Restore tested:** 2026-08-07 — restored `VERSION.md` from snapshot
+`aca1515f`, content verified byte-for-byte.
 
 ## Dashboard
 
