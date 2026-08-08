@@ -6,7 +6,7 @@
         description: DNS filtering
         widget:
           type: pihole
-          url: http://pihole
+          url: http://192.168.1.79
           version: 6
           key: ${PIHOLE_API_KEY}
 

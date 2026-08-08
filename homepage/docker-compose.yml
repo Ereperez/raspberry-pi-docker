@@ -59,6 +59,7 @@ services:
       HOMEPAGE_ALLOWED_HOSTS: ${HOMEPAGE_ALLOWED_HOSTS}
       PUID: ${PUID}
       PGID: ${PGID}
+      PIHOLE_API_KEY: ${PIHOLE_API_KEY}
 
     volumes:
       - ./config:/app/config
