@@ -42,7 +42,7 @@ endpoints:
 
   - name: Unbound
     group: DNS
-    url: "dns://192.168.1.79:53"
+    url: "192.168.1.79"
     dns:
       query-name: "dnssec.works"
       query-type: "A"
