@@ -4,17 +4,17 @@
 #         - abbr: BN
 #           href: https://example.com
 - Developer:
-    - Github:
+    - Github Ereperez:
         - abbr: GH
           href: https://github.com/Ereperez/raspberry-pi-docker
 
-- Social:
-    - Reddit:
-        - icon: reddit.png
-          href: https://reddit.com/
-          description: The front page of the internet
+#- Social:
+#    - Reddit:
+#        - icon: reddit.png
+#          href: https://reddit.com/
+#          description: The front page of the internet
 
-- Entertainment:
-    - YouTube:
-        - abbr: YT
-          href: https://youtube.com/
+#- Entertainment:
+#    - YouTube:
+#        - abbr: YT
+#          href: https://youtube.com/

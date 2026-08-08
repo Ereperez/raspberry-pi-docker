@@ -5,15 +5,31 @@
         href: http://192.168.1.79/admin
         description: DNS filtering
         widget:
-          type: pihole
-          url: http://192.168.1.79
-          version: 6
-          key: ${PIHOLE_API_KEY}
+            type: pihole
+            url: http://192.168.1.79
+            version: 6
+            key: ${PIHOLE_API_KEY}
 
     - Backrest:
         icon: restic.png
         href: http://192.168.1.79:9898
         description: Backup status
+        widget:
+            type: backrest
+            url: http://192.168.1.79:9898
+            username: admin # optional if auth is enabled in Backrest
+            password: ${BACKREST_PASSWORD}
+
+- Docker Tools:
+    - Portainer:
+        icon: portainer.png
+        href: http://192.168.1.79:9000/#!/home
+        description: Docker container admin
+        widget:
+            type: portainer
+            url: http://192.168.1.79:9000
+            env: 3
+            key: ${PRTAINER_API_KEY}
 
 - Homelab Tools:
     - Dozzle:
