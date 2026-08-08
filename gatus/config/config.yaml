@@ -2,6 +2,25 @@ storage:
   type: sqlite
   path: /data/data.db
 
+alerting:
+  custom:
+    url: "https://hc-ping.com/${HEALTHCHECKS_UUID}[ALERT_TRIGGERED_OR_RESOLVED]"
+    method: POST
+    placeholders:
+      ALERT_TRIGGERED_OR_RESOLVED:
+        TRIGGERED: "/fail"
+        RESOLVED: ""
+    body: |
+      {
+        "endpoint": "[ENDPOINT_NAME]",
+        "description": "[ALERT_DESCRIPTION]",
+        "status": "[ALERT_TRIGGERED_OR_RESOLVED]"
+      }
+    default-alert:
+      failure-threshold: 2
+      success-threshold: 1
+      send-on-resolved: true
+
 web:
   port: 8080
 
@@ -17,6 +36,9 @@ endpoints:
     conditions:
       - "[STATUS] == 200"
       - "[RESPONSE_TIME] < 1000"
+    alerts:
+      - type: custom
+        description: "Pi-hole is down"
 
   - name: Unbound
     group: DNS
@@ -27,6 +49,9 @@ endpoints:
     interval: 60s
     conditions:
       - "[DNS_RCODE] == NOERROR"
+    alerts:
+      - type: custom
+        description: "Unbound DNS resolution failing"
 
   - name: Homepage
     group: Dashboard
@@ -34,6 +59,9 @@ endpoints:
     interval: 60s
     conditions:
       - "[STATUS] == 200"
+    alerts:
+      - type: custom
+        description: "Homepage is down"
 
   - name: Backrest
     group: Backup
@@ -41,6 +69,9 @@ endpoints:
     interval: 60s
     conditions:
       - "[STATUS] == 200"
+    alerts:
+      - type: custom
+        description: "Backrest is down"
 
   - name: Portainer
     group: Docker Tools
@@ -48,6 +79,9 @@ endpoints:
     interval: 60s
     conditions:
       - "[STATUS] == 200"
+    alerts:
+      - type: custom
+        description: "Portainer is down"
 
   - name: Beszel Hub
     group: Monitoring
@@ -55,10 +89,13 @@ endpoints:
     interval: 60s
     conditions:
       - "[STATUS] == 200"
+    alerts:
+      - type: custom
+        description: "Beszel Hub is down"
 
-  # Alerting is not yet configured -- endpoints above only feed the
-  # dashboard/status page for now. To add alerts later (e.g. Discord,
-  # Slack, ntfy, or a Healthchecks-style webhook), see:
-  # https://github.com/TwiN/gatus#alerting
-  # and add an `alerts:` block per-endpoint or a global `alerting:`
-  # section at the top of this file.
+  # All six endpoints above share one Healthchecks check (HEALTHCHECKS_UUID
+  # below) -- Gatus only supports one global custom-provider config. This
+  # means Healthchecks' up/down state reflects "something is failing", not
+  # which one specifically; the endpoint name is in the ping body if you
+  # need to check Healthchecks' own ping log for detail. Split into
+  # per-endpoint checks later if that granularity turns out to matter.
