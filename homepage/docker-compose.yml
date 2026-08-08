@@ -18,7 +18,7 @@ services:
     command:
       - '-loglevel=info'
       - '-listenip=0.0.0.0'
-      - '-listenport=2375'
+      - '-proxyport=2375'
       # Only the homepage container may connect
       - '-allowfrom=homepage'
       # Read-only access to container listing/inspection/stats only --
