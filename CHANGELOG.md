@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-08-09
+- Deployed Gatus for endpoint monitoring — Pi-hole, Unbound, Homepage,
+  Backrest, Portainer, and Beszel Hub all checked on 60s intervals
+  - Pinned to v5.35.0 (canonical image moved to ghcr.io/twin/gatus)
+  - Published on 8081 to match the pre-existing Homepage tile
+  - Alerting wired to Healthchecks.io via Gatus's custom webhook provider,
+    using `[ALERT_TRIGGERED_OR_RESOLVED]` to hit the base ping URL on
+    recovery and `/fail` on failure -- verified end-to-end with a live
+    test (stopped a container, watched both Gatus and Healthchecks flip)
+  - Fixed DNS check for Unbound: Gatus wants a bare IP for `dns://`
+    endpoints, not a scheme prefix or explicit `:53` port
+  - Added doc: `gatus-monitoring.md`
+
 ## 2026-08-08 (later)
 - Deployed Beszel (hub + agent) for system monitoring — CPU, memory, disk,
   network, temperature, load average

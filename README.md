@@ -13,7 +13,7 @@ Docker services running on Raspberry Pi 4 - 4GB. Written with help of Claude, Ch
 | Backrest | Encrypted backups (restic) | Live |
 | Homepage | Dashboard | Live |
 | Beszel | System monitoring | Live |
-| Gatus | Service monitoring | Planned |
+| Gatus | Service monitoring | Live |
 | WUD | Docker update notifications | Planned |
 | Tailscale | Remote access | Planned |
 
@@ -28,6 +28,7 @@ Docker services running on Raspberry Pi 4 - 4GB. Written with help of Claude, Ch
 - [docs/backup-restic-backrest.md](docs/backup-restic-backrest.md) — Restic + Backrest backup setup
 - [docs/homepage-dashboard.md](docs/homepage-dashboard.md) — Homepage dashboard + socket-proxy setup
 - [docs/beszel-monitoring.md](docs/beszel-monitoring.md) — Beszel hub + agent monitoring setup
+- [docs/gatus-monitoring.md](docs/gatus-monitoring.md) — Gatus endpoint monitoring + alerting setup
 - [docs/CHANGELOG.md](docs/CHANGELOG.md) — dated history of changes
 - [docs/VERSION.md](docs/VERSION.md) — pinned versions per service
 

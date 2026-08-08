@@ -54,8 +54,21 @@ need this set manually each time.
 
 Beszel Hub: 0.18.7
 Beszel Agent: 0.18.7
-Gatus: -
+Gatus: v5.35.0
 WUD: -
+
+**Gatus alerting:** custom webhook to Healthchecks.io, sharing the same
+account used for Backrest. All six monitored endpoints (Pi-hole, Unbound,
+Homepage, Backrest, Portainer, Beszel Hub) share **one** Healthchecks
+check — Gatus only supports a single global custom-provider config, so the
+check's up/down state reflects "something is failing," not which service
+specifically (endpoint name is in the ping body if detail is needed).
+Split into per-endpoint checks later if that granularity matters.
+
+**DNS check syntax gotcha:** Gatus's `dns://` endpoints want a bare IP
+(`url: "192.168.1.79"`), not a `dns://` scheme prefix or an explicit
+`:53` port — either of those causes the check to error out entirely
+(shows `N/A` response time, not just a failed condition).
 
 **Beszel connection method:** agent-initiated WebSocket (`HUB_URL` +
 `TOKEN` + hub's public `KEY`), not the unix-socket method — matches what
