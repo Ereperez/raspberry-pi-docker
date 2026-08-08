@@ -23,7 +23,7 @@ services:
       - '-allowfrom=homepage'
       # Read-only access to container listing/inspection/stats only --
       # no exec, no create, no start/stop, no volumes, no networks.
-      - '-allowGET=/v1\..{1,2}/(containers.*|version|info)'
+      - '-allowGET=/(v[0-9]+\.[0-9]+/)?(containers.*|version|info)'
       - '-allowHEAD=/_ping'
       # Check the real socket every hour; stop (and let compose restart) on failure
       - '-watchdoginterval=3600'
