@@ -13,7 +13,6 @@ services:
 
     volumes:
       - ./data:/beszel_data
-      - ./socket:/beszel_socket
 
     logging:
       driver: json-file
@@ -31,18 +30,25 @@ services:
       - beszel-hub
 
     # Required for the agent to report accurate host-level network stats --
-    # without host networking it would only see the container's own
-    # isolated network, not the Pi's real interfaces.
+    # without host networking it would only see its own isolated network,
+    # not the Pi's real interfaces.
     network_mode: host
 
     environment:
       TZ: ${TZ}
-      LISTEN: /beszel_socket/beszel.sock
-      # Set after generating a key from the hub's "Add System" dialog
-      KEY: ${BESZEL_AGENT_KEY}
+      LISTEN: ${BESZEL_AGENT_LISTEN}
+      # Hub's SSH public key -- verifies the agent is talking to the
+      # legitimate hub. Generated once in the hub, same for every agent
+      # it manages, shown when adding a new system.
+      KEY: ${BESZEL_HUB_PUBLIC_KEY}
+      # One-time pairing token, generated per-system in the hub's
+      # "Add System" dialog.
+      TOKEN: ${BESZEL_AGENT_TOKEN}
+      # Lets the agent initiate an outgoing connection to the hub,
+      # rather than the hub needing to reach the agent directly.
+      HUB_URL: http://192.168.1.79:8090
 
     volumes:
-      - ./socket:/beszel_socket
       - ./agent_data:/var/lib/beszel-agent
       # Read-only, gives the agent visibility into per-container stats.
       # Mounted directly rather than through a filtered socket-proxy --
