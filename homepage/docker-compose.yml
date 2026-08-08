@@ -43,7 +43,7 @@ services:
         max-file: '3'
 
   homepage:
-    image: ghcr.io/gethomepage/homepage:v1.13.2
+    image: ghcr.io/gethomepage/homepage:latest
     container_name: homepage
     hostname: homepage
     restart: unless-stopped
