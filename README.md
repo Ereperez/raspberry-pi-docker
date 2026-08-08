@@ -11,7 +11,7 @@ Docker services running on Raspberry Pi 4 - 4GB. Written with help of Gemini, Ch
 | Portainer | Visual Docker monitor | Live |
 | Dockge | Compose management | Not planned |
 | Backrest | Encrypted backups (restic) | Live |
-| Homepage | Dashboard | Planned — see [docs/homepage-dashboard.md](docs/homepage-dashboard.md) |
+| Homepage | Dashboard | Live |
 | Beszel | System monitoring | Planned |
 | Gatus | Service monitoring | Planned |
 | WUD | Docker update notifications | Planned |

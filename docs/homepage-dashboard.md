@@ -325,12 +325,102 @@ Visit `http://192.168.1.79:3000`.
 
 ---
 
+## Environment variables — Homepage's substitution system
+
+**Critical:** Homepage does **not** use Docker Compose's `${VAR}` syntax
+inside its own config files (`services.yaml`, `widgets.yaml`, etc.). That
+syntax only works *inside `docker-compose.yml` itself*. `services.yaml` is
+a mounted file Homepage reads and parses on its own, with a separate
+substitution system.
+
+Homepage's system requires:
+- The container's environment variable name itself prefixed
+  `HOMEPAGE_VAR_` (e.g. `HOMEPAGE_VAR_PIHOLE_API_KEY`)
+- Referenced in YAML as `{{HOMEPAGE_VAR_PIHOLE_API_KEY}}`, not `${...}`
+
+Getting this wrong doesn't throw a clear error — Homepage sends the
+**literal string** `${VAR}` as the credential, which every downstream API
+correctly rejects, producing a 401 that looks exactly like a bad password.
+This was the root cause of Pi-hole, Backrest, and Portainer all failing
+simultaneously despite each credential being independently verified as
+correct via direct curl tests. If a widget fails auth despite a
+triple-checked-correct value, check this first.
+
+`.env`:
+```bash
+HOMEPAGE_VAR_PIHOLE_API_KEY=...
+HOMEPAGE_VAR_BACKREST_PASSWORD=...
+HOMEPAGE_VAR_PORTAINER_API_KEY=...
+```
+
+`docker-compose.yml` — the container-side variable name must carry the
+same prefix, not just the `.env` source:
+```yaml
+environment:
+  HOMEPAGE_VAR_PIHOLE_API_KEY: ${HOMEPAGE_VAR_PIHOLE_API_KEY}
+  HOMEPAGE_VAR_BACKREST_PASSWORD: ${HOMEPAGE_VAR_BACKREST_PASSWORD}
+  HOMEPAGE_VAR_PORTAINER_API_KEY: ${HOMEPAGE_VAR_PORTAINER_API_KEY}
+```
+
+`services.yaml`:
+```yaml
+key: '{{HOMEPAGE_VAR_PIHOLE_API_KEY}}'
+```
+
+**Two more `.env` gotchas hit along the way:**
+- **Windows line endings.** Editing `.env` on Windows can save CRLF line
+  endings, appending an invisible `\r` to every value. Check with
+  `file .env` — should say plain `ASCII text`. Fix: `sed -i 's/\r$//' .env`.
+- **Literal `$` in generated passwords.** Compose treats `$` as the start
+  of a variable reference even inside `.env` values. A password containing
+  `$` needs it doubled to `$$`, or Compose silently substitutes an empty
+  string — tell-tale sign is a `WARN "X" variable is not set` line.
+
+## Portainer widget — Community Edition permission ceiling
+
+Portainer CE has no scoped/read-only role — those are Business Edition
+only. A Standard-role user, even with explicit environment access granted,
+cannot see individual containers unless it also has resource-level access
+to each one.
+
+**Fix, without granting full Administrator:** on each container Homepage
+needs visibility into, open the container → **Access control** → set
+ownership to **Restricted** → add only the `homepage` user (not Public,
+not a broader team). Repeat per container — Portainer defaults new
+containers to Administrators-only ownership, so this needs setting again
+for anything created after this guide was written.
+
+## Docker socket proxy — flag names for this image version
+
+wollomatic/socket-proxy's actual CLI flags (confirmed via
+`docker compose logs dockerproxy` showing the built-in `--help` output
+after a flag typo) — worth reconfirming against `--help` if upgrading:
+
+```
+-listenip       (not -listenaddress)
+-proxyport      (not -listenport)
+-allowfrom
+-allowGET / -allowPOST / etc.
+-watchdoginterval
+-stoponwatchdog
+```
+
+Also: the `-allowGET` regex must match the **exact request path** Homepage
+sends, which for Docker's container-listing endpoint is unversioned
+(`/containers/json?all=true`), not the versioned `/v1.xx/containers/json`
+path some Docker API examples assume:
+```
+-allowGET=/(v[0-9]+\.[0-9]+/)?(containers.*|version|info)
+```
+
 ## Troubleshooting
 
 | Symptom | Likely cause |
 |---|---|
 | Homepage shows a blank page / refused to load | `HOMEPAGE_ALLOWED_HOSTS` doesn't include the host:port you're browsing from |
 | `dockerproxy` container exits immediately | `DOCKER_GID` in `.env` doesn't match `getent group docker` on the host |
-| Homepage can't reach Docker status widgets | Confirm `homepage` container is on both `default` and `docker-proxynet`; confirm `docker.yaml` points at `dockerproxy:2375`, not `localhost` or the raw socket |
-| Pi-hole widget shows an error | `PIHOLE_API_KEY` missing/incorrect in `homepage/.env`, or key was regenerated in Pi-hole since |
-| Proxy logs show `403` on a request Homepage makes | The requested API path isn't covered by `-allowGET` — widen the regex deliberately rather than switching to a broad `.*` allow |
+| `dockerproxy` restart-loops with a usage/help dump in logs | A CLI flag name is wrong for this image version — check against `--help` output in the logs, don't assume flag names from older guides |
+| `dockerproxy` logs show `blocked request, path not allowed` | `-allowGET` regex doesn't match the actual request path — check the logged `URL=` value and adjust the regex to match it exactly |
+| Homepage can't reach Docker status widgets | Confirm `homepage` container is on both `default` and `docker-proxynet`; confirm `docker.yaml` points at `dockerproxy:2375` |
+| A widget fails auth (401) despite a verified-correct credential | Almost certainly the `${VAR}` vs `{{HOMEPAGE_VAR_VAR}}` mix-up — see above, check this before re-checking the credential itself |
+| Portainer widget stays 401/empty even with a valid, unprefixed-fixed key | Per-container resource ownership in Portainer — see Portainer CE section above |

@@ -1,6 +1,23 @@
 # Changelog
 
-## 2026-08-06
+## 2026-08-08
+- Deployed Homepage dashboard, live with Pi-hole, Backrest, and Portainer widgets
+  - Docker container visibility via dedicated wollomatic/socket-proxy (`-allowfrom=homepage`,
+    GET-only, isolated internal network) — real proxy flag is `-proxyport`, not `-listenport`
+  - `-allowGET` regex fixed to match Homepage's unversioned Docker API calls
+    (`/containers/json`, not `/v1.xx/containers/json`)
+  - Root cause of all three widgets returning 401 despite valid, individually-verified
+    credentials: Homepage uses its own `{{HOMEPAGE_VAR_X}}` substitution system in config
+    files, distinct from Compose's `${VAR}` — using `${VAR}` sends the literal string as
+    the credential rather than failing loudly. All service credentials renamed with the
+    required `HOMEPAGE_VAR_` prefix.
+  - Portainer widget needed per-container "Restricted" resource ownership granted to the
+    scoped `homepage` user (CE has no read-only/scoped role short of full Administrator)
+  - `.env` CRLF line endings (from Windows editing) and unescaped `$` in generated
+    passwords both fixed along the way — `.env` values with `$` need `$$` escaping
+- Confirmed Dockge will not be implemented (Portainer covers this need)
+
+## 2026-08-07
 - Deployed Backrest (restic + web UI) — daily backups of homelab repo to Google Drive via rclone
   - Own Google Cloud OAuth client configured (shared rclone client_id being retired during 2026)
   - Retention: 14 daily / 8 weekly / 12 monthly
@@ -10,7 +27,6 @@
 - Added zone-based firewall rule for cross-VLAN DNS access (IoT → Pi-hole), corrected rule priority
 - Scaffolded Homepage dashboard — compose file and docs added, not yet deployed
   - Docker visibility provided via wollomatic/socket-proxy (dedicated proxy per consumer, least-privilege)
-- Confirmed Dockge will not be implemented (Portainer covers this need)
 - Added docs: `backup-restic-backrest.md`, `homepage-dashboard.md`
 
 ## 2026-08-05

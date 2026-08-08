@@ -29,8 +29,26 @@ use (shared rclone client_id being retired during 2026).
 
 ## Dashboard
 
-Homepage: v1.13.2 *(not yet deployed)*
-Socket Proxy (wollomatic/socket-proxy, Homepage's dockerproxy): 1 *(not yet deployed)*
+Homepage: v1.13.2
+Socket Proxy (wollomatic/socket-proxy, Homepage's dockerproxy): 1
+
+**Docker visibility:** wollomatic/socket-proxy, dedicated to Homepage only
+(`-allowfrom=homepage`, GET-only on containers/version/info paths).
+Dozzle will get its own separate proxy instance when deployed — one
+proxy per consumer, not shared.
+
+**Live widgets:** Pi-hole, Backrest, Portainer. All three authenticate via
+Homepage's `HOMEPAGE_VAR_*` env var substitution (`{{HOMEPAGE_VAR_X}}` in
+YAML — this is Homepage's own substitution system, distinct from Docker
+Compose's `${VAR}` syntax; using the wrong one silently sends the literal
+`${VAR}` string as the credential rather than failing loudly).
+
+**Portainer widget note:** Portainer CE has no scoped read-only role
+(Business Edition only). The `homepage` Portainer user is Standard role
+with per-resource **Restricted** ownership granted explicitly on each
+container it needs to see — kept off the Administrators-only default and
+off Public. New containers default to Administrators-only ownership and
+need this set manually each time.
 
 ## Monitoring
 
