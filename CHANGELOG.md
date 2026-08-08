@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-08-08 (later)
+- Deployed Beszel (hub + agent) for system monitoring — CPU, memory, disk,
+  network, temperature, load average
+  - Pinned to v0.18.7 (patches both known security advisories affecting
+    the agent's Docker socket access)
+  - Connected via agent-initiated WebSocket (HUB_URL/TOKEN/KEY), matching
+    what the hub's "Add System" UI generates for local systems, rather
+    than the unix-socket method originally planned
+  - Docker socket mounted directly (read-only) into the agent rather than
+    via socket-proxy — documented as a deliberate scope trade-off, unlike
+    Homepage's narrower proxied access
+  - Added doc: `beszel-monitoring.md`
+
 ## 2026-08-08
 - Deployed Homepage dashboard, live with Pi-hole, Backrest, and Portainer widgets
   - Docker container visibility via dedicated wollomatic/socket-proxy (`-allowfrom=homepage`,

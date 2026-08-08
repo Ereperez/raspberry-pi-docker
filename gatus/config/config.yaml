@@ -1,0 +1,64 @@
+storage:
+  type: sqlite
+  path: /data/data.db
+
+web:
+  port: 8080
+
+ui:
+  title: Homelab Status
+  header: Homelab Status
+
+endpoints:
+  - name: Pi-hole
+    group: DNS
+    url: "http://192.168.1.79/admin/login"
+    interval: 60s
+    conditions:
+      - "[STATUS] == 200"
+      - "[RESPONSE_TIME] < 1000"
+
+  - name: Unbound
+    group: DNS
+    url: "dns://192.168.1.79:53"
+    dns:
+      query-name: "dnssec.works"
+      query-type: "A"
+    interval: 60s
+    conditions:
+      - "[DNS_RCODE] == NOERROR"
+
+  - name: Homepage
+    group: Dashboard
+    url: "http://192.168.1.79:3000"
+    interval: 60s
+    conditions:
+      - "[STATUS] == 200"
+
+  - name: Backrest
+    group: Backup
+    url: "http://192.168.1.79:9898"
+    interval: 60s
+    conditions:
+      - "[STATUS] == 200"
+
+  - name: Portainer
+    group: Docker Tools
+    url: "http://192.168.1.79:9000"
+    interval: 60s
+    conditions:
+      - "[STATUS] == 200"
+
+  - name: Beszel Hub
+    group: Monitoring
+    url: "http://192.168.1.79:8090"
+    interval: 60s
+    conditions:
+      - "[STATUS] == 200"
+
+  # Alerting is not yet configured -- endpoints above only feed the
+  # dashboard/status page for now. To add alerts later (e.g. Discord,
+  # Slack, ntfy, or a Healthchecks-style webhook), see:
+  # https://github.com/TwiN/gatus#alerting
+  # and add an `alerts:` block per-endpoint or a global `alerting:`
+  # section at the top of this file.
