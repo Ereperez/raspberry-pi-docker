@@ -1,6 +1,6 @@
 # Raspberry Pi Docker Homelab
 
-Docker services running on Raspberry Pi 4 - 4GB. Written with help of Gemini, ChatGPT and Claude.
+Docker services running on Raspberry Pi 4 - 4GB. Written with help of Claude, ChatGPT and Gemini.
 
 ## Current services
 
@@ -12,7 +12,7 @@ Docker services running on Raspberry Pi 4 - 4GB. Written with help of Gemini, Ch
 | Dockge | Compose management | Not planned |
 | Backrest | Encrypted backups (restic) | Live |
 | Homepage | Dashboard | Live |
-| Beszel | System monitoring | Planned |
+| Beszel | System monitoring | Live |
 | Gatus | Service monitoring | Planned |
 | WUD | Docker update notifications | Planned |
 | Tailscale | Remote access | Planned |
@@ -27,6 +27,7 @@ Docker services running on Raspberry Pi 4 - 4GB. Written with help of Gemini, Ch
 - [docs/docker-tools.md](docs/docker-tools.md) — Portainer + Dockge
 - [docs/backup-restic-backrest.md](docs/backup-restic-backrest.md) — Restic + Backrest backup setup
 - [docs/homepage-dashboard.md](docs/homepage-dashboard.md) — Homepage dashboard + socket-proxy setup
+- [docs/beszel-monitoring.md](docs/beszel-monitoring.md) — Beszel hub + agent monitoring setup
 - [docs/CHANGELOG.md](docs/CHANGELOG.md) — dated history of changes
 - [docs/VERSION.md](docs/VERSION.md) — pinned versions per service
 

@@ -52,6 +52,19 @@ need this set manually each time.
 
 ## Monitoring
 
-Beszel: -
+Beszel Hub: 0.18.7
+Beszel Agent: 0.18.7
 Gatus: -
 WUD: -
+
+**Beszel connection method:** agent-initiated WebSocket (`HUB_URL` +
+`TOKEN` + hub's public `KEY`), not the unix-socket method — matches what
+the hub UI generates by default for local systems. Token confirmed
+reusable across agent restarts, not single-use.
+
+**Docker socket:** mounted directly into the agent, read-only, not routed
+through a socket-proxy like Homepage's setup — Beszel needs broader
+per-container stats access than a simple GET-only proxy scopes cleanly.
+Pinned version (0.18.7) already includes fixes for both known advisories
+affecting this access pattern (GHSA-phwh-4f42-gwf3, Docker API path
+traversal, fixed 0.18.4; GHSA-5f5r-95pg-xrpm, IDOR, fixed 0.18.7).
