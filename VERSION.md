@@ -55,7 +55,6 @@ need this set manually each time.
 Beszel Hub: 0.18.7
 Beszel Agent: 0.18.7
 Gatus: v5.35.0
-WUD: -
 
 **Gatus alerting:** custom webhook to Healthchecks.io, sharing the same
 account used for Backrest. All six monitored endpoints (Pi-hole, Unbound,
@@ -81,3 +80,19 @@ per-container stats access than a simple GET-only proxy scopes cleanly.
 Pinned version (0.18.7) already includes fixes for both known advisories
 affecting this access pattern (GHSA-phwh-4f42-gwf3, Docker API path
 traversal, fixed 0.18.4; GHSA-5f5r-95pg-xrpm, IDOR, fixed 0.18.7).
+
+## Updates
+
+WUD: 8.3.1
+
+**Mode:** notify-only, no auto-update triggers configured (deliberate
+choice over Watchtower). Nothing is monitored by default -- containers
+must be labeled `wud.watch=true` individually to appear in WUD.
+
+**Docker socket:** mounted directly into WUD, read-only -- same trade-off
+reasoning as Beszel's agent (needs image/registry inspection access
+broader than a simple container-list proxy scopes cleanly).
+
+**Auth:** basic auth via `WUD_AUTH_BASIC_*` env vars. APR1 hash contains
+multiple `$` segments -- every one needs doubling to `$$` in `.env` or
+Compose silently empties the value (hit this exact bug on first deploy).
