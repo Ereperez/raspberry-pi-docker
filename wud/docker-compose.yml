@@ -1,0 +1,45 @@
+services:
+  wud:
+    image: ghcr.io/getwud/wud:8.3.1
+    container_name: wud
+    hostname: wud
+    restart: unless-stopped
+
+    read_only: true
+    security_opt:
+      - no-new-privileges
+
+    # Published on 3001 -- 3000 is already taken by Homepage.
+    ports:
+      - '3001:3000'
+
+    environment:
+      TZ: ${TZ}
+      # Notify only, per the deliberate choice to use WUD over Watchtower --
+      # no auto-update triggers are configured here. Containers must
+      # explicitly opt in to being watched via the wud.watch=true label;
+      # nothing is monitored by default just because the socket is mounted.
+      WUD_WATCHER_LOCAL_CRON: '0 0 * * *'
+
+      # Basic auth for the WUD web UI. Hash must be Apache-style APR1 (MD5),
+      # not bcrypt. Generate with:
+      #   htpasswd -nb 'yourusername' 'yourpassword' | cut -d: -f2
+      WUD_AUTH_BASIC_HOMELAB_USER: ${WUD_ADMIN_USER}
+      WUD_AUTH_BASIC_HOMELAB_HASH: ${WUD_ADMIN_PASSWORD_HASH}
+
+    volumes:
+      - ./data:/store
+      # Read-only, gives WUD visibility into running containers and their
+      # images/digests for update checking. Mounted directly rather than
+      # through a filtered socket-proxy -- same trade-off reasoning as
+      # Beszel's agent, see docs/wud-updates.md. No write access is
+      # possible from this mount, and no update-trigger environment
+      # variables are configured, so WUD cannot modify or recreate any
+      # container even if asked to via its UI.
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+    logging:
+      driver: json-file
+      options:
+        max-size: '10m'
+        max-file: '3'
