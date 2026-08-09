@@ -1,0 +1,51 @@
+services:
+  tailscale:
+    # Deliberate exception to the pin-everything convention -- Tailscale's
+    # own docs recommend the 'stable' tag over a fixed version, since
+    # containers are meant to be redeployed and get security patches on
+    # every restart, rather than silently running an aging VPN client.
+    image: tailscale/tailscale:stable
+    container_name: tailscale
+    hostname: rpi4-homelab
+
+    restart: unless-stopped
+
+    # Host networking avoids Docker's own NAT interfering with the tailnet
+    # interface and subnet routing -- the standard, recommended mode for
+    # this use case.
+    network_mode: host
+
+    environment:
+      TS_AUTHKEY: ${TS_AUTHKEY}
+      TS_STATE_DIR: /var/lib/tailscale
+      # Kernel networking (not userspace) -- needed for subnet routing to
+      # actually forward LAN traffic correctly.
+      TS_USERSPACE: 'false'
+      # Advertises the home LAN so other tailnet devices can reach it.
+      # Routes must still be approved once in the Tailscale admin console
+      # after first connect -- advertising alone doesn't activate them.
+      TS_EXTRA_ARGS: --advertise-routes=192.168.1.0/24
+      # Don't let Tailscale override this host's own DNS resolution --
+      # the Pi already has its own resolver setup (Unbound/Pi-hole) and
+      # shouldn't have that silently replaced.
+      TS_ACCEPT_DNS: 'false'
+
+    volumes:
+      - ./state:/var/lib/tailscale
+
+    devices:
+      - /dev/net/tun:/dev/net/tun
+
+    # NET_ADMIN + NET_RAW per Tailscale's own docs for kernel networking
+    # mode. Not adding SYS_MODULE -- Raspberry Pi OS's default kernel
+    # already has the tun module available, so it shouldn't be needed;
+    # add it only if the container logs show it failing to load tun.
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+
+    logging:
+      driver: json-file
+      options:
+        max-size: '10m'
+        max-file: '3'
