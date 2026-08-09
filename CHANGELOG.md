@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-08-09 (later)
+- Deployed WUD for Docker update notifications
+  - Pinned to 8.3.1, published on 3001 (3000 taken by Homepage)
+  - Notify-only, no auto-update triggers -- containers must opt in via
+    `wud.watch=true` label; nothing watched by default
+  - Basic auth via `WUD_AUTH_BASIC_*` -- hit the same `$` escaping bug as
+    Backrest's password (APR1 hashes contain multiple `$` segments, all
+    need doubling to `$$` in `.env`)
+  - Confirmed working: correctly flagged Gatus's v5.36.0 release on first
+    scan
+  - Added doc: `wud-updates.md`
+
 ## 2026-08-09
 - Deployed Gatus for endpoint monitoring — Pi-hole, Unbound, Homepage,
   Backrest, Portainer, and Beszel Hub all checked on 60s intervals
