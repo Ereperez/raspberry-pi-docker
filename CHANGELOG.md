@@ -1,5 +1,21 @@
 # Changelog
 
+## 2026-08-10 (later)
+- Batched Homepage widget integration for Beszel, Gatus, WUD, and
+  Tailscale -- Homepage now has a live tile for every deployed service
+  - Verified all four widget configs against current gethomepage.dev docs
+    before drafting, given the earlier `${VAR}` vs `{{HOMEPAGE_VAR_X}}`
+    debugging cost
+  - Beszel: reuses the hub's own admin login (PocketBase "superuser"
+    requirement), `systemId: RPi4`, `version: 2`
+  - WUD: needs the plaintext login password, a separate credential from
+    the APR1 hash used for the container's own basic auth
+  - Tailscale: needs a separate API access token (not the container's
+    join key) plus the machine's device ID -- both sourced from the
+    admin console, token also expires in 90 days
+  - All six new credentials worked on first deploy, no debugging round
+    needed this time
+
 ## 2026-08-10
 - Deployed Tailscale for remote access
   - Using `stable` image tag rather than pinning, per Tailscale's own
