@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-08-10 (later still)
+- Bumped Gatus v5.35.0 -> v5.36.0 (WUD-flagged update). Notable changes:
+  security fix for invalid security-config validation, Postgres perf
+  improvement (not applicable, on SQLite), email alert subject fix (not
+  applicable, alerts go via Healthchecks webhook). Low-risk update.
+- Left Unbound pinned at v1.25.2 despite WUD flagging v1.26.0 -- the
+  newer release has no security-fix designation (unlike 1.25.2, which
+  consolidated several CVE fixes), so there's no urgency, and DNS is the
+  one component in this stack deliberately not touched without a clear
+  reason. Revisit when a security-labeled Unbound release appears, or
+  during a planned maintenance window.
+
 ## 2026-08-10 (later)
 - Batched Homepage widget integration for Beszel, Gatus, WUD, and
   Tailscale -- Homepage now has a live tile for every deployed service

@@ -72,7 +72,7 @@ need this set manually each time.
 
 Beszel Hub: 0.18.7
 Beszel Agent: 0.18.7
-Gatus: v5.35.0
+Gatus: v5.36.0
 
 **Gatus alerting:** custom webhook to Healthchecks.io, sharing the same
 account used for Backrest. All six monitored endpoints (Pi-hole, Unbound,
