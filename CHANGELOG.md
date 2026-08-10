@@ -1,5 +1,23 @@
 # Changelog
 
+## 2026-08-10
+- Deployed Tailscale for remote access
+  - Using `stable` image tag rather than pinning, per Tailscale's own
+    guidance (VPN client should always get security patches on redeploy)
+  - Subnet router advertising home LAN (`192.168.1.0/24`)
+  - Tailnet ACL policy updated: `tagOwners` for `tag:homelab`, plus
+    `autoApprovers` so the advertised route auto-approves on connect
+    without a manual click, and node key expiry is disabled for the
+    tagged device
+  - Enabled DNS override: Pi-hole set as tailnet global nameserver, giving
+    ad/tracker blocking on cellular data for all tailnet devices --
+    deliberate trade-off accepted (browsing DNS now depends on
+    Pi-hole/Unbound uptime even away from home; device-to-device access
+    via Tailscale is unaffected either way, that's a separate system)
+  - Verified end-to-end from cellular-only: subnet route reachability and
+    DNS override both confirmed via Pi-hole query log
+  - Added doc: `tailscale-remote-access.md`
+
 ## 2026-08-09 (later)
 - Deployed WUD for Docker update notifications
   - Pinned to 8.3.1, published on 3001 (3000 taken by Homepage)

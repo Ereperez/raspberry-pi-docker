@@ -31,21 +31,42 @@
           env: 3
           key: '{{HOMEPAGE_VAR_PORTAINER_API_KEY}}'
 
-- Homelab Tools:
-    - Dozzle:
-        icon: dozzle.png
-        href: http://192.168.1.79:8080
-        description: Container logs
-        # Add once deployed
+    - WUD:
+        icon: whats-up-docker.png
+        href: http://192.168.1.79:3001
+        description: Docker update notifications
+        widget:
+          type: whatsupdocker
+          url: http://192.168.1.79:3001
+          username: '{{HOMEPAGE_VAR_WUD_ADMIN_USER}}'
+          password: '{{HOMEPAGE_VAR_WUD_ADMIN_PASSWORD}}'
 
+- Homelab Tools:
     - Beszel:
         icon: beszel.png
         href: http://192.168.1.79:8090
         description: System monitoring
-        # Add once deployed
+        widget:
+          type: beszel
+          url: http://192.168.1.79:8090
+          username: '{{HOMEPAGE_VAR_BESZEL_USERNAME}}'
+          password: '{{HOMEPAGE_VAR_BESZEL_PASSWORD}}'
+          systemId: RPi4
+          version: 2
 
     - Gatus:
         icon: gatus.png
         href: http://192.168.1.79:8081
         description: Uptime checks
-        # Add once deployed
+        widget:
+          type: gatus
+          url: http://192.168.1.79:8081
+
+    - Tailscale:
+        icon: tailscale.png
+        href: https://login.tailscale.com/admin/machines
+        description: Remote access
+        widget:
+          type: tailscale
+          deviceid: '{{HOMEPAGE_VAR_TAILSCALE_DEVICE_ID}}'
+          key: '{{HOMEPAGE_VAR_TAILSCALE_API_KEY}}'

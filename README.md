@@ -15,7 +15,7 @@ Docker services running on Raspberry Pi 4 - 4GB. Written with help of Claude, Ch
 | Beszel | System monitoring | Live |
 | Gatus | Service monitoring | Live |
 | WUD | Docker update notifications | Live |
-| Tailscale | Remote access | Planned |
+| Tailscale | Remote access | Live |
 
 > Update this table's Status column as each service goes live — see
 > `docs/CHANGELOG.md` and `docs/VERSION.md` for the running history.
@@ -30,6 +30,7 @@ Docker services running on Raspberry Pi 4 - 4GB. Written with help of Claude, Ch
 - [docs/beszel-monitoring.md](docs/beszel-monitoring.md) — Beszel hub + agent monitoring setup
 - [docs/gatus-monitoring.md](docs/gatus-monitoring.md) — Gatus endpoint monitoring + alerting setup
 - [docs/wud-updates.md](docs/wud-updates.md) — WUD update notification setup
+- [docs/tailscale-remote-access.md](docs/tailscale-remote-access.md) — Tailscale remote access + subnet routing setup
 - [docs/CHANGELOG.md](docs/CHANGELOG.md) — dated history of changes
 - [docs/VERSION.md](docs/VERSION.md) — pinned versions per service
 
