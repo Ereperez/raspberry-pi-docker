@@ -93,7 +93,32 @@ endpoints:
       - type: custom
         description: "Beszel Hub is down"
 
-  # All six endpoints above share one Healthchecks check (HEALTHCHECKS_UUID
+  - name: WUD
+    group: Homelab Tools
+    url: "http://192.168.1.79:3001"
+    interval: 60s
+    headers:
+      Authorization: "Basic ${WUD_BASIC_AUTH_B64}"
+    conditions:
+      - "[STATUS] == 200"
+    alerts:
+      - type: custom
+        description: "WUD is down"
+
+  - name: Tailscale
+    group: Homelab Tools
+    url: "https://api.tailscale.com/api/v2/device/${GATUS_TAILSCALE_DEVICE_ID}"
+    interval: 300s
+    headers:
+      Authorization: "Bearer ${GATUS_TAILSCALE_API_KEY}"
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY].authorized == true"
+    alerts:
+      - type: custom
+        description: "Tailscale device unreachable or deauthorized"
+
+  # All eight endpoints above share one Healthchecks check (HEALTHCHECKS_UUID
   # below) -- Gatus only supports one global custom-provider config. This
   # means Healthchecks' up/down state reflects "something is failing", not
   # which one specifically; the endpoint name is in the ping body if you

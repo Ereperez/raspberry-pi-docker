@@ -1,0 +1,31 @@
+services:
+  npm:
+    image: jc21/nginx-proxy-manager:2.15.1
+    container_name: nginx-proxy-manager
+    hostname: npm
+    restart: unless-stopped
+
+    ports:
+      # Proxy traffic -- LAN/tailnet only, nothing forwarded on the router
+      - '80:80'
+      - '443:443'
+      # Admin web UI
+      - '81:81'
+
+    environment:
+      TZ: ${TZ}
+      # No IPv6 configured on this network (confirmed via UniFi: Interface
+      # Type: None) -- avoids startup errors trying to bind an IPv6 socket.
+      DISABLE_IPV6: 'true'
+
+    volumes:
+      - ./data:/data
+      # Present even though Let's Encrypt isn't used here (internal-only,
+      # mkcert certs instead) -- NPM expects this path to exist regardless.
+      - ./letsencrypt:/etc/letsencrypt
+
+    logging:
+      driver: json-file
+      options:
+        max-size: '10m'
+        max-file: '3'
