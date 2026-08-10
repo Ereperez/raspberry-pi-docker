@@ -1,5 +1,33 @@
 # Changelog
 
+## 2026-08-10 (later still)
+- Bumped Gatus v5.35.0 -> v5.36.0 (WUD-flagged update). Notable changes:
+  security fix for invalid security-config validation, Postgres perf
+  improvement (not applicable, on SQLite), email alert subject fix (not
+  applicable, alerts go via Healthchecks webhook). Low-risk update.
+- Left Unbound pinned at v1.25.2 despite WUD flagging v1.26.0 -- the
+  newer release has no security-fix designation (unlike 1.25.2, which
+  consolidated several CVE fixes), so there's no urgency, and DNS is the
+  one component in this stack deliberately not touched without a clear
+  reason. Revisit when a security-labeled Unbound release appears, or
+  during a planned maintenance window.
+
+## 2026-08-10 (later)
+- Batched Homepage widget integration for Beszel, Gatus, WUD, and
+  Tailscale -- Homepage now has a live tile for every deployed service
+  - Verified all four widget configs against current gethomepage.dev docs
+    before drafting, given the earlier `${VAR}` vs `{{HOMEPAGE_VAR_X}}`
+    debugging cost
+  - Beszel: reuses the hub's own admin login (PocketBase "superuser"
+    requirement), `systemId: RPi4`, `version: 2`
+  - WUD: needs the plaintext login password, a separate credential from
+    the APR1 hash used for the container's own basic auth
+  - Tailscale: needs a separate API access token (not the container's
+    join key) plus the machine's device ID -- both sourced from the
+    admin console, token also expires in 90 days
+  - All six new credentials worked on first deploy, no debugging round
+    needed this time
+
 ## 2026-08-10
 - Deployed Tailscale for remote access
   - Using `stable` image tag rather than pinning, per Tailscale's own

@@ -221,8 +221,8 @@ layout:
 
 ### `config/services.yaml`
 
-Starter tiles for what's already deployed, plus placeholders for what's
-coming next:
+The current, live configuration — every deployed service has a working
+widget, not just a link tile:
 
 ```yaml
 ---
@@ -233,33 +233,95 @@ coming next:
         description: DNS filtering
         widget:
           type: pihole
-          url: http://pihole
-          key: ${PIHOLE_API_KEY}
+          url: http://192.168.1.79
+          version: 6
+          key: '{{HOMEPAGE_VAR_PIHOLE_API_KEY}}'
 
     - Backrest:
         icon: restic.png
         href: http://192.168.1.79:9898
         description: Backup status
+        widget:
+          type: backrest
+          url: http://192.168.1.79:9898
+          username: admin
+          password: '{{HOMEPAGE_VAR_BACKREST_PASSWORD}}'
+
+- Docker Tools:
+    - Portainer:
+        icon: portainer.png
+        href: http://192.168.1.79:9000/#!/home
+        description: Docker container admin
+        widget:
+          type: portainer
+          url: http://192.168.1.79:9000
+          env: 3
+          key: '{{HOMEPAGE_VAR_PORTAINER_API_KEY}}'
+
+    - WUD:
+        icon: whats-up-docker.png
+        href: http://192.168.1.79:3001
+        description: Docker update notifications
+        widget:
+          type: whatsupdocker
+          url: http://192.168.1.79:3001
+          username: '{{HOMEPAGE_VAR_WUD_ADMIN_USER}}'
+          password: '{{HOMEPAGE_VAR_WUD_ADMIN_PASSWORD}}'
 
 - Homelab Tools:
-    - Dozzle:
-        icon: dozzle.png
-        href: http://192.168.1.79:8080
-        description: Container logs
-
     - Beszel:
         icon: beszel.png
         href: http://192.168.1.79:8090
         description: System monitoring
+        widget:
+          type: beszel
+          url: http://192.168.1.79:8090
+          username: '{{HOMEPAGE_VAR_BESZEL_USERNAME}}'
+          password: '{{HOMEPAGE_VAR_BESZEL_PASSWORD}}'
+          systemId: RPi4
+          version: 2
 
     - Gatus:
         icon: gatus.png
         href: http://192.168.1.79:8081
         description: Uptime checks
+        widget:
+          type: gatus
+          url: http://192.168.1.79:8081
+
+    - Tailscale:
+        icon: tailscale.png
+        href: https://login.tailscale.com/admin/machines
+        description: Remote access
+        widget:
+          type: tailscale
+          deviceid: '{{HOMEPAGE_VAR_TAILSCALE_DEVICE_ID}}'
+          key: '{{HOMEPAGE_VAR_TAILSCALE_API_KEY}}'
 ```
 
-`PIHOLE_API_KEY` needs adding to `homepage/.env` — generate it from the
-Pi-hole admin UI under Settings → API.
+### Widget-specific credential notes
+
+**Beszel** — the widget requires a PocketBase "superuser" account; the
+admin email/password created on first login to the Beszel hub works
+directly, no separate account needed. `systemId` matches the system name
+given in Beszel's Add System dialog (`RPi4` here, not a UUID — Beszel's
+widget docs confirm the "nice name" is accepted). `version: 2` applies to
+Beszel >= 0.9.0.
+
+**WUD** — needs the **plaintext** login password, not
+`WUD_ADMIN_PASSWORD_HASH` (the APR1 hash stored in `wud/.env` for the
+container's own basic auth). Two different credentials for two different
+purposes — easy to reach for the wrong one since they're both
+"the WUD password" in casual terms.
+
+**Tailscale** — needs a separate **API access token**
+(admin console → Settings → Keys → **Generate API access token**, a
+different button from "Generate auth key" on the same page), not the
+container's `TS_AUTHKEY`. Device ID comes from Machines → click the
+machine → Machine Details → the ID ending in `CNTRL`. The API token also
+expires (max 90 days) — an independent renewal item from the container's
+own auth key, easy to forget since they're generated in different places
+at different times.
 
 ### `config/widgets.yaml`
 

@@ -37,11 +37,29 @@ Socket Proxy (wollomatic/socket-proxy, Homepage's dockerproxy): 1
 Dozzle will get its own separate proxy instance when deployed — one
 proxy per consumer, not shared.
 
-**Live widgets:** Pi-hole, Backrest, Portainer. All three authenticate via
-Homepage's `HOMEPAGE_VAR_*` env var substitution (`{{HOMEPAGE_VAR_X}}` in
-YAML — this is Homepage's own substitution system, distinct from Docker
-Compose's `${VAR}` syntax; using the wrong one silently sends the literal
-`${VAR}` string as the credential rather than failing loudly).
+**Live widgets:** Pi-hole, Backrest, Portainer, Beszel, Gatus, WUD,
+Tailscale — every deployed service now has a Homepage tile. All
+credentialed widgets authenticate via Homepage's `HOMEPAGE_VAR_*` env var
+substitution (`{{HOMEPAGE_VAR_X}}` in YAML — this is Homepage's own
+substitution system, distinct from Docker Compose's `${VAR}` syntax;
+using the wrong one silently sends the literal `${VAR}` string as the
+credential rather than failing loudly).
+
+**Beszel widget:** requires a PocketBase "superuser" account — the same
+admin email/password created on first login to the Beszel hub works.
+`systemId: RPi4` matches the system name set in Beszel's own Add System
+dialog. `version: 2` for Beszel >= 0.9.0 (we're on 0.18.7).
+
+**WUD widget:** needs the WUD login's **plaintext** password — a
+different credential from `WUD_ADMIN_PASSWORD_HASH` (the APR1 hash stored
+in `wud/.env` for the container's own basic auth). Two credentials, two
+purposes, easy to conflate.
+
+**Tailscale widget:** needs a separate **API access token**
+(Settings → Keys → Generate API access token), not the container's
+`TS_AUTHKEY` used for joining the tailnet. Also expires (max 90 days) —
+a second, independent renewal item alongside the container's own auth
+key.
 
 **Portainer widget note:** Portainer CE has no scoped read-only role
 (Business Edition only). The `homepage` Portainer user is Standard role
@@ -54,7 +72,7 @@ need this set manually each time.
 
 Beszel Hub: 0.18.7
 Beszel Agent: 0.18.7
-Gatus: v5.35.0
+Gatus: v5.36.0
 
 **Gatus alerting:** custom webhook to Healthchecks.io, sharing the same
 account used for Backrest. All six monitored endpoints (Pi-hole, Unbound,
