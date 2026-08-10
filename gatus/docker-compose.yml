@@ -13,6 +13,9 @@ services:
     environment:
       TZ: ${TZ}
       HEALTHCHECKS_UUID: ${HEALTHCHECKS_UUID}
+      WUD_BASIC_AUTH_B64: ${WUD_BASIC_AUTH_B64}
+      GATUS_TAILSCALE_API_KEY: ${GATUS_TAILSCALE_API_KEY}
+      GATUS_TAILSCALE_DEVICE_ID: ${GATUS_TAILSCALE_DEVICE_ID}
 
     volumes:
       - ./config/config.yaml:/config/config.yaml:ro
