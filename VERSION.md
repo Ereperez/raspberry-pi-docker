@@ -96,3 +96,30 @@ broader than a simple container-list proxy scopes cleanly).
 **Auth:** basic auth via `WUD_AUTH_BASIC_*` env vars. APR1 hash contains
 multiple `$` segments -- every one needs doubling to `$$` in `.env` or
 Compose silently empties the value (hit this exact bug on first deploy).
+
+## Remote Access
+
+Tailscale: stable (deliberate exception to pin-everything -- Tailscale's
+own docs recommend against fixed-version pinning so the VPN client always
+gets security patches on redeploy)
+
+**Mode:** subnet router, advertising `192.168.1.0/24`. Auto-approved via
+`tag:homelab` + `autoApprovers` in the tailnet ACL policy -- no manual
+click needed in the Machines list after (re)connect. Node key expiry also
+disabled for tagged devices.
+
+**Auth key:** reusable, pre-approved, 90-day expiry -- needs manual
+regeneration when it expires (flagged in `.env.example`). An OAuth client
+setup would remove this maintenance item if it becomes worth the added
+complexity later.
+
+**DNS override:** enabled. Pi-hole (`192.168.1.79`) set as tailnet global
+nameserver with Override DNS on -- gives ad/tracker blocking on cellular
+data for all tailnet devices, at the cost of making general web browsing
+(not device-to-device access, which is unaffected either way) dependent on
+Pi-hole/Unbound uptime even away from home. Toggle off anytime via Admin
+Console -> DNS -> Nameservers if this trade-off stops being worth it.
+
+**Reachability confirmed:** subnet route and DNS override both tested from
+cellular-only (WiFi off), verified via Pi-hole query log showing the
+phone's Tailscale IP.
