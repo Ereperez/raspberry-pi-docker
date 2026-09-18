@@ -29,7 +29,7 @@ use (shared rclone client_id being retired during 2026).
 
 ## Dashboard
 
-Homepage: v1.13.2
+Homepage: v2.4.0
 Socket Proxy (wollomatic/socket-proxy, Homepage's dockerproxy): 1
 
 **Docker visibility:** wollomatic/socket-proxy, dedicated to Homepage only
@@ -70,8 +70,8 @@ need this set manually each time.
 
 ## Monitoring
 
-Beszel Hub: 0.18.7
-Beszel Agent: 0.18.7
+Beszel Hub: 0.19.0
+Beszel Agent: 0.19.0
 Gatus: v5.36.0
 
 **Gatus alerting:** custom webhook to Healthchecks.io, sharing the same
@@ -101,7 +101,7 @@ traversal, fixed 0.18.4; GHSA-5f5r-95pg-xrpm, IDOR, fixed 0.18.7).
 
 ## Updates
 
-WUD: 8.3.1
+WUD: 9.0.2
 
 **Mode:** notify-only, no auto-update triggers configured (deliberate
 choice over Watchtower). Nothing is monitored by default -- containers
