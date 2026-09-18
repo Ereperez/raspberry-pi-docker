@@ -1,6 +1,6 @@
 services:
   wud:
-    image: ghcr.io/getwud/wud:8.3.1
+    image: ghcr.io/getwud/wud:9.0.2
     container_name: wud
     hostname: wud
     restart: unless-stopped
@@ -24,8 +24,8 @@ services:
       # Basic auth for the WUD web UI. Hash must be Apache-style APR1 (MD5),
       # not bcrypt. Generate with:
       #   htpasswd -nb 'yourusername' 'yourpassword' | cut -d: -f2
-      WUD_AUTH_BASIC_HOMELAB_USER: ${WUD_ADMIN_USER}
-      WUD_AUTH_BASIC_HOMELAB_HASH: ${WUD_ADMIN_PASSWORD_HASH}
+      WUD_AUTH_ADMIN_USER: ${WUD_ADMIN_USER}
+      WUD_AUTH_ADMIN_PASSWORD: ${WUD_ADMIN_PASSWORD}
 
     volumes:
       - ./data:/store
