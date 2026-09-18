@@ -3,7 +3,7 @@
 ## DNS
 
 Pi-hole: 2026.07.2
-Unbound: v1.25.2
+Unbound: v1.26.1
 
 ## Management
 

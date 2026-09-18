@@ -5,6 +5,7 @@ Beszel 0.18.7 > 0.19.0
 Beszel-agent 0.18.7 > 0.19.0
 homepage v1.13.2 > v2.4.0
 wud 8.3.1 > 9.0.2
+unbound v1.25.2 > v1.26.1
 
 ## 2026-08-10 (later still)
 - Bumped Gatus v5.35.0 -> v5.36.0 (WUD-flagged update). Notable changes:

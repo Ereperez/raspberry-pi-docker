@@ -1,6 +1,6 @@
 services:
   unbound:
-    image: klutchell/unbound:v1.25.2
+    image: klutchell/unbound:v1.26.1
     container_name: unbound
     hostname: unbound
 
