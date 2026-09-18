@@ -1,6 +1,6 @@
 services:
   beszel-hub:
-    image: henrygd/beszel:0.18.7
+    image: henrygd/beszel:0.19.0
     container_name: beszel
     hostname: beszel
     restart: unless-stopped
@@ -21,7 +21,7 @@ services:
         max-file: '3'
 
   beszel-agent:
-    image: henrygd/beszel-agent:0.18.7
+    image: henrygd/beszel-agent:0.19.0
     container_name: beszel-agent
     hostname: beszel-agent
     restart: unless-stopped
