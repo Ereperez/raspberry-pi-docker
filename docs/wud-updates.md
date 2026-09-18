@@ -73,8 +73,13 @@ services:
     environment:
       TZ: ${TZ}
       WUD_WATCHER_LOCAL_CRON: '0 0 * * *'
-      WUD_AUTH_BASIC_HOMELAB_USER: ${WUD_ADMIN_USER}
-      WUD_AUTH_BASIC_HOMELAB_HASH: ${WUD_ADMIN_PASSWORD_HASH}
+      # WUD 9.x seeds the initial admin user using these plain-text variables, 
+      # hashes them securely, and stores them in the local database.
+      WUD_AUTH_ADMIN_USER: ${WUD_ADMIN_USER}
+      WUD_AUTH_ADMIN_PASSWORD: ${WUD_ADMIN_PASSWORD}
+      #WUD 8.X
+      #WUD_AUTH_BASIC_HOMELAB_USER: ${WUD_ADMIN_USER}
+      #WUD_AUTH_BASIC_HOMELAB_HASH: ${WUD_ADMIN_PASSWORD_HASH}
 
     volumes:
       - ./data:/store
@@ -87,7 +92,8 @@ services:
         max-file: '3'
 ```
 
-## 3. Generate the basic-auth password hash
+## 3. (SKIP for WUD 9.x) Generate the basic-auth password hash
+Only applicable for older WUD 8.x versions, skip to 4. env if using wud 9.x
 
 Needs `apache2-utils` (provides `htpasswd`) — a small, single-purpose
 package, safe to remove afterward if preferred:
@@ -126,6 +132,7 @@ WUD_ADMIN_PASSWORD_HASH=$$apr1$$xxxxxxxx$$yyyyyyyyyyyyyyyyyyyyyy
 ```
 
 ## 4. `.env`
+Unlike WUD 8.x, WUD 9.x no longer requires manually generating htpasswd APR1 hashes or escaping $$ characters. Pass the plain-text password directly.
 
 ```bash
 cp .env.example .env
@@ -135,7 +142,7 @@ nano .env
 ```bash
 TZ=Europe/Stockholm
 WUD_ADMIN_USER=yourusername
-WUD_ADMIN_PASSWORD_HASH=$$apr1$$xxxxxxxx$$yyyyyyyyyyyyyyyyyyyyyy
+WUD_ADMIN_PASSWORD=YourSecurePassword123
 ```
 
 ## 5. Deploy
@@ -145,6 +152,7 @@ docker compose up -d
 docker compose logs -f wud
 ```
 
+If using older WUD:
 Look for `Some authentications failed to register` in the logs — if
 present, the hash didn't come through correctly (almost always the `$$`
 escaping above). A clean start shows auth registering without that
